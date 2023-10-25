@@ -234,3 +234,61 @@ function mostrarCursos(cursos) {
       `;
     });
 }
+//ANY
+//O any indica que o dado pode conter qualquer tipo de dado do TypeScript. 
+//Devemos evitar ao máximo o uso do any, pois o mesmo remove todas as seguranças e conveniências que o TS fornece.
+function normalizar(texto) {
+    return texto.trim().toLowerCase();
+}
+normalizar(' DeSIGN');
+// Any Implicito
+//Fora do modo estrito, o TypeScript permitirá o uso de parâmetros sem especificarmos o tipo. 
+//Esses parâmetros terão o tipo implícito de any.
+//Uso do Any
+//Em alguns casos o any faz sentido, como no caso da função json() onde qualquer tipo de dado pode ser retornado, 
+//dependendo da API que acessarmos.
+//NULL E UNDEFINED
+// null é um tipo primitivo que representa a ausência de valor. É comum em funções do DOM que fazem uma busca, 
+// retornarem null quando não são bem sucedidas.
+const bt = document.querySelector('button');
+const config = localStorage.getItem('config');
+if (bt !== null) {
+    bt.click();
+}
+if (bt) {
+    bt.click();
+}
+if (bt)
+    bt.click();
+bt?.click();
+console.log(typeof null); //vai dar object no console, é um bug do js
+const livro = {};
+const jogo = {
+    nome: 'Ragnarok',
+};
+console.log(jogo.nome?.toLowerCase());
+console.log(livro.nome?.toLowerCase());
+//   strictNullChecks
+// Sem o strictNullChecks como true, o TypeScript assume que qualquer valor pode incluir null | undefined e
+// consequentemente para de checar casos onde realmente o null | undefined podem ser retornados.
+// tsconfig.json
+// {
+//   "compilerOptions": {
+//     "target": "ESNext",
+//     "strict": true, // já incluso no strict
+//     "strictNullChecks": true
+//   }
+// }
+// OBJETOS E INTERFACES
+// INSTANCEOF
+//CLASS
+//Em JavaScript, Classes class são funções construtoras que geram objetos. Quando definimos uma classe, 
+//o TypeScript gera a interface do objeto produzido pela mesma.
+class Produto {
+    // nomenclatura:string;
+    constructor(nome) {
+        // this.nomenclatura = nome;
+    }
+}
+const trilogias = new Produto('A Guerra dos Tronos');
+console.log(trilogias);
