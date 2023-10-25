@@ -1,19 +1,20 @@
+"use strict";
 // TIPOS (TYPES)
 // O tipo define o que podemos fazer com um dado
-var frase = 'Front End';
-var total = 100;
-var empresas = ['apple', 'Microsoft'];
-var body = document.body;
-var button = document.querySelector('button');
+const frase = 'Front End';
+const total = 100;
+const empresas = ['apple', 'Microsoft'];
+const body = document.body;
+const button = document.querySelector('button');
 console.log(frase.toLowerCase());
 console.log(total * 2);
-console.log(empresas.map(function (empresa) { return empresa.toLowerCase(); }));
+console.log(empresas.map((empresa) => empresa.toLowerCase()));
 //ts-check@ = faz o editor indicar erros de TS
 // TYPE ANOTATION
 // No momento o JavaScript não possui uma forma de indicarmos qual será o tipo de dado.
 // Não é possível prever o argumento que será passado no parâmetro de funções, para isso 
 // são necessárias as anotações de tipos.
-var produtos = [
+const produtos = [
     {
         nome: 'O Senhor dos anéis',
         tipo: 'livro',
@@ -28,33 +29,34 @@ var produtos = [
     }
 ];
 function filtrarLivros(dados) {
-    return dados.filter(function (item) { return item.tipo === 'livro'; });
+    return dados.filter((item) => item.tipo === 'livro');
 }
 console.log(filtrarLivros(produtos));
 // INSTALAÇÃO DO TYPESCRIPT
 // npm install -g typescript
 // testar se está instalado: tsc 
+//SCRIPT E TSC
 // um arquivo em ts não consegue ser executado no browser. Para compilar em js: tsc typescript.ts
 function somar(a, b) {
     return a + b;
 }
 console.log(somar(5, 10)); //o arquivo compilado em js remove tudo o que tem de ts e mantém só ts
-// para não precisar ficar compilando o tempo todo: tsc --init + npm install -g typescript
+// para não precisar ficar compilando o tempo todo: npm install -g typescript + tsc --init + tsc -w
 // ANOTATION (ANOTAÇÃO):
 // COM O TRYPESCRIPT PODEMOS INDICAR QUAL SERÁ O DADO DE UMA VARIÁVEL ATRAVÉS DE ANOTAÇÕES
-var produto = "Livro";
-var preço = 200;
-var carro = {
+const produto = "Livro";
+const preço = 200;
+const carro = {
     marca: "Audi",
     portas: 4
 };
 console.log(carro);
 // INFERENCE (INFERÊNCIA)
-// O TS consegue inferir o tipo de dado de expressões em JSON. Sempre que ele conseguir inferir, 
+// O TS consegue inferir o tipo de dado de expressões em JS. Sempre que ele conseguir inferir, 
 // não é necessário fazer a anotação do dado.
-var product = "Livro";
-var price = 200;
-var car = {
+const product = "Livro";
+const price = 200;
+const car = {
     marca: "Audi",
     portas: 4
 };
@@ -64,6 +66,93 @@ console.log(car);
 function sum(a, b) {
     return a + b;
 }
-console.log(sum(4, 10));
-// 9 min
-
+sum(4, 10);
+console.log(sum);
+const nintendo = {
+    nome: "nintendo",
+    preço: "2000",
+};
+function transformarPreço(produto) {
+    produto.preço = 'R$' + produto.preço;
+    return produto;
+}
+const produtoNovo = transformarPreço(nintendo);
+console.log(produtoNovo);
+//exercício
+function normalizarTexto(texto) {
+    return texto.trim().toLowerCase();
+}
+console.log(normalizarTexto("FrOnt-ENd"));
+//STRING, NUMBER E BOOLEAN
+//  são tipos básicos do TypeScript (primitivos).
+//  Não confundir string, number e boolean com String, Number e Boolean. 
+//  Os últimos são as funções construtoras desses tipos de dados, responsáveis 
+//  pela herança das propriedades e métodos dos mesmos.
+const preco = 500;
+const condi = preco > 100;
+if (typeof frase === 'string') {
+    console.log('frase é string');
+}
+if (typeof preco === 'number') {
+    console.log('preco é number');
+}
+if (typeof condi === 'boolean') {
+    console.log('condi é boolean');
+}
+//UNION TYPES
+// É comum termos funções que podem retornar ou receber tipos diferentes. 
+//Para isso usamos a barra vertical string | number | boolean.
+//Funções podem receber parâmetros com diferentes tipos e também podem retornar diferentes tipos de dados.
+function isNumber(value) {
+    if (typeof value === 'number') {
+        return true;
+    }
+    else {
+        return 'Não é número';
+    }
+}
+console.log(isNumber(300));
+console.log(isNumber('oi'));
+//DOM
+// Funções que selecionam elementos do DOM geralmente retornam null como uma possibilidade de tipo, 
+// pois o TypeScript não tem acesso prévio ao DOM para saber se o elemento existe ou não.
+// Retorna HTMLButtonElement | null
+const btn = document.querySelector('btn');
+// Optional chaining
+// Executa click() se button for diferente de null/undefined
+button?.click();
+//exercício
+// 1 - Crie uma função chamada toNumber
+// 2 - A função pode receber number | string
+// 3 - Se a função receber um número, retorne um número
+// 4 - Se a função receber uma string, retorne um número
+// 5 - Se ela receber algo diferente, retorne um erro. (throw "value deve ser um número ou uma string")
+function toNumber(value) {
+    if (typeof value === 'number') {
+        return value;
+    }
+    else if (typeof value === 'string') {
+        return Number(value);
+    }
+    else {
+        throw "value deve ser um number | string";
+    }
+}
+console.log(toNumber(200));
+console.log(toNumber('200'));
+//TYPES E INTERFACES
+//OBJECT
+// É possível definir a forma (shape) de um objeto usando uma sintaxe parecida com a de criação de objetos : {}
+function preencherDados(dados) {
+    document.body.innerHTML += `
+    <div>
+    <h2>${dados.nome}</h2>
+    <p>${dados.preço}</p>
+    <p>Inclui teclado: ${dados.teclado ? "sim" : "não"}</p>
+    `;
+}
+preencherDados({
+    nome: 'Computador',
+    preço: 2000,
+    teclado: false,
+}); //VERIFICAR
