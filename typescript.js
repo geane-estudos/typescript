@@ -155,4 +155,82 @@ preencherDados({
     nome: 'Computador',
     preço: 2000,
     teclado: false,
-}); //VERIFICAR
+});
+function pintarCategoria(categoria) {
+    if (categoria === 'design') {
+        console.log('Pintar vermelho');
+    }
+    else if (categoria === 'codigo') {
+        console.log('Pintar verde');
+    }
+    else if (categoria === 'descod') {
+        console.log('Pintar roxo');
+    }
+}
+pintarCategoria('codigo');
+//exercício
+async function fetchProduct() {
+    const response = await fetch('https://api.origamid.dev/json/notebook.json');
+    const data = await response.json();
+    showProduct(data);
+}
+fetchProduct();
+function showProduct(data) {
+    document.body.innerHTML = `
+      <div>
+        <h2>${data.nome}</h2>
+        <p>${data.preco}</p>
+        <p>${data.descricao}</p>
+        <p>${data.garantia}</p>
+        <p>${data.seguroAcidentes}</p>
+        <p>Fabricante:${data.empresaFabricante.nome}</p>
+        <p>Montadora:${data.empresaMontadora.nome}</p>
+      </div>
+    `;
+}
+//ARRAYS
+//Um array é definidO com o tipo de dado(s) que ele possui, seguidO por []:
+const numeros = [10, 20, 30, 40, 50];
+const valores = [10, 'taxas', 30, 'produto', 50];
+function maiorQue10(data) {
+    return data.filter(n => n > 10);
+}
+function filtrarValores(data) {
+    return data.filter((item) => typeof item === "number");
+}
+console.log(maiorQue10(numeros));
+console.log(filtrarValores(valores));
+//Sintaxe Alternativa
+//Existe uma sintaxe alternativa, onde usamos Array<type>. Sendo type o tipo de dado dentro da array.
+const nros = [10, 30, 40, 5, 3, 30];
+function maiorQue20(data) {
+    return data.filter((n) => n > 10);
+}
+console.log(maiorQue20(nros));
+async function fetchCursos() {
+    const response = await fetch('https://api.origamid.dev/json/cursos.json');
+    const data = await response.json();
+    mostrarCursos(data);
+}
+fetchCursos();
+function mostrarCursos(cursos) {
+    cursos.forEach((curso) => {
+        let color;
+        if (curso.nivel === 'iniciante') {
+            color = 'blue';
+        }
+        else if (curso.nivel === 'avancado') {
+            color = 'red';
+        }
+        document.body.innerHTML += `
+        <div>
+          <h2 style="color: ${color};">${curso.nome}</h2>
+          <p>Horas: ${curso.horas}</p>
+          <p>Aulas: ${curso.aulas}</p>
+          <p>Tipo: ${curso.gratuito ? 'Gratuito' : 'Pago'}</p>
+          <p>Tags: ${curso.tags.join(', ')}</p>
+          <p>Aulas: ${curso.idAulas.join(' | ')}</p>
+        </div>
+      `;
+    });
+}

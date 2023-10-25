@@ -18,7 +18,7 @@ console.log(empresas.map((empresa) => empresa.toLowerCase()))
 // Não é possível prever o argumento que será passado no parâmetro de funções, para isso 
 // são necessárias as anotações de tipos.
 
-const produtos =[
+const produtos = [
     {
         nome: 'O Senhor dos anéis',
         tipo: 'livro',
@@ -46,10 +46,10 @@ console.log(filtrarLivros(produtos));
 //SCRIPT E TSC
 // um arquivo em ts não consegue ser executado no browser. Para compilar em js: tsc typescript.ts
 
-function somar(a: number,b: number) {
+function somar(a: number, b: number) {
     return a + b
 }
-console.log(somar(5,10)); //o arquivo compilado em js remove tudo o que tem de ts e mantém só ts
+console.log(somar(5, 10)); //o arquivo compilado em js remove tudo o que tem de ts e mantém só ts
 
 // para não precisar ficar compilando o tempo todo: npm install -g typescript + tsc --init + tsc -w
 
@@ -74,7 +74,7 @@ console.log(carro)
 // O TS consegue inferir o tipo de dado de expressões em JS. Sempre que ele conseguir inferir, 
 // não é necessário fazer a anotação do dado.
 
-const product= "Livro";
+const product = "Livro";
 const price = 200;
 
 const car: {
@@ -90,10 +90,10 @@ console.log(car)
 // FUNÇÕES
 // As anotações são necessárias quando lidamos com funções.
 
-function sum (a: number,b: number) {
+function sum(a: number, b: number) {
     return a + b
 }
-sum(4,10)
+sum(4, 10)
 console.log(sum)
 
 const nintendo = {
@@ -111,11 +111,11 @@ console.log(produtoNovo);
 //exercício
 function normalizarTexto(texto: string) {
     return texto.trim().toLowerCase();
-  }
- console.log(normalizarTexto("FrOnt-ENd"))
+}
+console.log(normalizarTexto("FrOnt-ENd"))
 
- 
- //STRING, NUMBER E BOOLEAN
+
+//STRING, NUMBER E BOOLEAN
 //  são tipos básicos do TypeScript (primitivos).
 //  Não confundir string, number e boolean com String, Number e Boolean. 
 //  Os últimos são as funções construtoras desses tipos de dados, responsáveis 
@@ -124,13 +124,13 @@ const preco = 500;
 const condi = preco > 100;
 
 if (typeof frase === 'string') {
-  console.log('frase é string');
+    console.log('frase é string');
 }
 if (typeof preco === 'number') {
-  console.log('preco é number');
+    console.log('preco é number');
 }
 if (typeof condi === 'boolean') {
-  console.log('condi é boolean');
+    console.log('condi é boolean');
 }
 
 //UNION TYPES
@@ -141,15 +141,15 @@ if (typeof condi === 'boolean') {
 
 function isNumber(value: string | number) {
     if (typeof value === 'number') {
-      return true;
+        return true;
     } else {
-      return 'Não é número';
+        return 'Não é número';
     }
-  }
-  console.log(isNumber(300))
-  console.log(isNumber('oi'))
+}
+console.log(isNumber(300))
+console.log(isNumber('oi'))
 
-  //DOM
+//DOM
 // Funções que selecionam elementos do DOM geralmente retornam null como uma possibilidade de tipo, 
 // pois o TypeScript não tem acesso prévio ao DOM para saber se o elemento existe ou não.
 
@@ -166,13 +166,13 @@ button?.click();
 // 4 - Se a função receber uma string, retorne um número
 // 5 - Se ela receber algo diferente, retorne um erro. (throw "value deve ser um número ou uma string")
 
-function toNumber(value: number | string){
+function toNumber(value: number | string) {
     if (typeof value === 'number') {
         return value;
     } else if (typeof value === 'string') {
-    return Number(value);
+        return Number(value);
     } else {
-        throw "value deve ser um number | string" 
+        throw "value deve ser um number | string"
     }
 }
 console.log(toNumber(200))
@@ -183,9 +183,9 @@ console.log(toNumber('200'))
 //OBJECT
 // É possível definir a forma (shape) de um objeto usando uma sintaxe parecida com a de criação de objetos : {}
 
-function preencherDados(dados:{
-    nome:string;
-    preço:number;
+function preencherDados(dados: {
+    nome: string;
+    preço: number;
     teclado: boolean;
 }) {
     document.body.innerHTML += `
@@ -199,4 +199,145 @@ preencherDados({
     nome: 'Computador',
     preço: 2000,
     teclado: false,
-  }); //VERIFICAR
+});
+
+//TYPE
+//A palavra-chave type cria um atalho para um tipo customizado:
+
+type Categorias = 'design' | 'codigo' | 'descod';
+
+function pintarCategoria(categoria: Categorias) {
+    if (categoria === 'design') {
+        console.log('Pintar vermelho');
+    } else if (categoria === 'codigo') {
+        console.log('Pintar verde');
+    } else if (categoria === 'descod') {
+        console.log('Pintar roxo');
+    }
+}
+
+pintarCategoria('codigo');
+
+
+// INTERFACE
+// Interface funciona na maioria dos casos da mesma forma que type, porém possui uma sintaxe diferente.
+// As interfaces são geralmente utilizadas para definirmos objetos.
+
+interface InterfaceProduto {
+    nome: string,
+    preço: number;
+    teclado: boolean;
+}
+
+type TypeProduto = {
+    nome: string,
+    preço: number;
+    teclado: boolean;
+}
+
+//exercício
+async function fetchProduct() {
+    const response = await fetch('https://api.origamid.dev/json/notebook.json');
+    const data = await response.json();
+    showProduct(data);
+}
+
+fetchProduct();
+interface Empresa {
+    fundacao: number;
+    nome: string;
+    pais: string
+}
+
+interface Product {
+    nome: string;
+    preco: number;
+    descricao: string;
+    garantia: string;
+    seguroAcidentes: boolean;
+    empresaFabricante: Empresa;
+    empresaMontadora: Empresa
+}
+
+function showProduct(data: Product) {
+    document.body.innerHTML = `
+      <div>
+        <h2>${data.nome}</h2>
+        <p>${data.preco}</p>
+        <p>${data.descricao}</p>
+        <p>${data.garantia}</p>
+        <p>${data.seguroAcidentes}</p>
+        <p>Fabricante:${data.empresaFabricante.nome}</p>
+        <p>Montadora:${data.empresaMontadora.nome}</p>
+      </div>
+    `;
+}
+
+//ARRAYS
+//Um array é definidO com o tipo de dado(s) que ele possui, seguidO por []:
+
+const numeros = [10, 20, 30, 40, 50];
+const valores = [10, 'taxas', 30, 'produto', 50];
+
+function maiorQue10(data:number[]) {
+    return data.filter(n => n > 10)
+}
+
+function filtrarValores(data: (number | string)[]) {
+return data.filter((item) => typeof item === "number");
+}
+
+console.log(maiorQue10(numeros))
+console.log(filtrarValores(valores))
+
+//Sintaxe Alternativa
+//Existe uma sintaxe alternativa, onde usamos Array<type>. Sendo type o tipo de dado dentro da array.
+const nros = [10, 30, 40, 5, 3, 30];
+
+function maiorQue20(data: Array<number>) {
+  return data.filter((n) => n > 10);
+}
+console.log(maiorQue20(nros))
+
+//exercício
+//Existem apenas dois níveis de cursos, Iniciante (iniciante) e Avançado (avancado). 
+//Se for para iniciante pinte o título de azul, para avançado pinte de vermelho.
+
+interface Curso {
+    nome: string;
+    horas: number;
+    aulas: string;
+    gratuito: boolean;
+    tags: string[];
+    idAulas: number[];
+    nivel: 'iniciante' | 'avancado';
+  }
+  
+  async function fetchCursos() {
+    const response = await fetch('https://api.origamid.dev/json/cursos.json');
+    const data = await response.json();
+    mostrarCursos(data);
+  }
+  
+  fetchCursos();
+  
+  function mostrarCursos(cursos: Curso[]) {
+    cursos.forEach((curso) => {
+      let color;
+      if (curso.nivel === 'iniciante') {
+        color = 'blue';
+      } else if (curso.nivel === 'avancado') {
+        color = 'red';
+      }
+      document.body.innerHTML += `
+        <div>
+          <h2 style="color: ${color};">${curso.nome}</h2>
+          <p>Horas: ${curso.horas}</p>
+          <p>Aulas: ${curso.aulas}</p>
+          <p>Tipo: ${curso.gratuito ? 'Gratuito' : 'Pago'}</p>
+          <p>Tags: ${curso.tags.join(', ')}</p>
+          <p>Aulas: ${curso.idAulas.join(' | ')}</p>
+        </div>
+      `;
+    });
+  }
